@@ -1,4 +1,3 @@
-test
 alacritty 
 foot 
 cabextract 
