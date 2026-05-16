@@ -1,0 +1,45 @@
+{
+  "layer": "top",
+  "position": "top",
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["clock"],
+  "modules-right": ["cpu", "memory", "pulseaudio", "network", "custom/battery"],
+
+  "clock": { "format": " {:%H:%M  %d-%m-%Y}", "tooltip": false },
+  "cpu": { "format": "{usage}%", "tooltip":" {load}" },
+  "memory": {
+    "format": "{percentage}%",
+    "tooltip":"{used:0.1f}G/{total:0.1f}G"
+  },  
+
+"pulseaudio": {
+    "format": "{icon}",
+    "format-muted": " Muted",
+    "format-icons": ["", "", ""],
+    "tooltip-format": "{volume}%",
+    "tooltip": true 
+  },
+  "network": {
+    "format-wifi": " {essid} ({signalStrength}%)",
+    "format-ethernet": " {ifname}",
+    "format-disconnected": " Disconnected",
+    "tooltip": false
+  },
+
+  "custom/battery": {
+    "exec": "~/dotfiles/config/waybar/battery_status.sh",
+    "interval": 1,
+  },
+  
+  "network": {
+   "format": "{icon}",
+   "format-wifi": "",               // wifi icoon
+   "format-ethernet": "󰈁",          // ethernet icoon
+   "format-disconnected": "󰖪",      // geen verbinding
+   "tooltip-format": "{essid} ({signalStrength}%)", 
+   "on-click": "nm-connection-editor"
+  },
+
+
+"tray": true
+}

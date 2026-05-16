@@ -1,0 +1,11 @@
+[Unit]
+Description=Enable NumLock
+After=systemd-user-sessions.service
+
+[Service]
+ExecStart=/usr/bin/setleds -D +num < /dev/tty1
+StandardInput=tty
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

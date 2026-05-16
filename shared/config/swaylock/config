@@ -1,0 +1,18 @@
+# Achtergrond (kleur of afbeelding)
+color=000000                # effen zwart
+# image=/home/kevin/Afbeeldingen/wallpaper.png
+
+# Blur en effecten
+effect-blur=7x5
+effect-vignette=0.5:0.5
+
+# Ring rond het wachtwoord
+indicator-radius=120
+indicator-thickness=10
+
+ring-color=285577           # neutraal
+key-hl-color=33cc33         # groen bij toetsaanslag
+line-color=00000000         # lijn onzichtbaar
+inside-color=00000088       # semi-transparant zwart
+separator-color=00000000    # geen scheiding
+text-color=ffffffff         # wit
