@@ -45,6 +45,19 @@ select opt in "${options[@]}"; do
     esac
 done
 
+####################################################
+# Tijdelijk
+####################################################
+echo "Test: sudo werkt?"
+if sudo -v; then
+    echo "sudo werkt!"
+else
+    echo "Fout: sudo werkt niet. Voer het script als root uit of controleer sudo-rechten."
+    exit 1
+fi
+####################################################
+
+
 # Controleer of $SYSTEM en packs.sh bestaan
 if [ ! -f "$SYSTEM/packs.sh" ]; then
     echo "Fout: $SYSTEM/packs.sh niet gevonden."
