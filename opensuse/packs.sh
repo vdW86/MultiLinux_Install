@@ -32,3 +32,4 @@ keepassxc
 libreoffice-base 
 libreoffice-l10n-nl
 nmcli
+swayimg
