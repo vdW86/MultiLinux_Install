@@ -48,15 +48,6 @@ done
 ####################################################
 # Tijdelijk
 ####################################################
-echo "Test: sudo werkt?"
-if sudo -v; then
-    echo "sudo werkt!"
-else
-    echo "Fout: sudo werkt niet. Voer het script als root uit of controleer sudo-rechten."
-    exit 1
-fi
-####################################################
-
 
 # Controleer of $SYSTEM en packs.sh bestaan
 if [ ! -f "$SYSTEM/packs.sh" ]; then
@@ -67,17 +58,21 @@ fi
 echo "Gekozen systeem: $SYSTEM"
 echo "Pakketten installeren met: $PKG_MANAGER"
 
-# Installeer pakketten
-while IFS= read -r package; do
-    if [ -z "$package" ]; then
-        continue
-    fi
-    echo "Installeren: $package"
-    if ! $PKG_MANAGER "$package"; then
-        echo "Fout: Kon pakket '$package' niet installeren."
-    fi
-done < "$SYSTEM/packs.sh"
+# Lees alle pakketten in een array (sla opmerkingen en lege regels over)
+mapfile -t packages < <(grep -v '^#' "$SYSTEM/packs.sh" | grep -v '^$' | tr -d '\r')
 
+# Installeer alle pakketten in één commando
+if [ ${#packages[@]} -gt 0 ]; then
+    echo "Installeren van ${#packages[@]} pakketten: ${packages[*]}" | tee -a "$LOG_FILE"
+    if ! $PKG_MANAGER "${packages[@]}" >> "$LOG_FILE" 2>&1; then
+        echo "❌ Fout: Kon niet alle pakketten installeren. Zie logbestand voor details." | tee -a "$LOG_FILE"
+    else
+        echo "✅ Alle pakketten geïnstalleerd." | tee -a "$LOG_FILE"
+    fi
+else
+    echo "Geen pakketten gevonden in $SYSTEM/packs.sh" | tee -a "$LOG_FILE"
+fi
+#####################################################
 # Voer subscripts uit (vanuit ~/MultiLinux_Install/)
 echo "Voer extra scripts uit..."
 ./shared/InstallScripts/Define_Folders.sh
