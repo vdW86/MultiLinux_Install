@@ -2,16 +2,16 @@
 
 # Vraag om systeemkeuze
 PS3="Voor welk systeem wil je installeren? "
-options=("OpenSuSe" "Fedora" "Afsluiten")
+options=("opensuse" "fedora" "Afsluiten")
 select opt in "${options[@]}"; do
     case $opt in
-        "OpenSuSe")
-            SYSTEM="OpenSuSe"
+        "opensuse")
+            SYSTEM="opensuse"
             PKG_MANAGER="sudo zypper install -y"
             break
             ;;
-        "Fedora")
-            SYSTEM="Fedora"
+        "fedora")
+            SYSTEM="fedora"
             PKG_MANAGER="sudo dnf install -y"
             break
             ;;
