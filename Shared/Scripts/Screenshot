@@ -1,0 +1,22 @@
+#!/bin/bash
+
+dir="$HOME/Afbeeldingen"
+mkdir -p "$dir"   # zorg dat map bestaat
+
+timestamp=$(date +'%Y%m%d-%H%M%S')
+file="screenshot-$timestamp.png"
+
+case "$1" in
+    full)
+        grim "$dir/$file"
+        notify-send "📸 Screenshot volledig scherm" "$dir/$file"
+        ;;
+    clipboard)
+        grim -g "$(slurp)" - | wl-copy
+        notify-send "📋 Screenshot naar klembord"
+        ;;
+    *)
+        grim -g "$(slurp)" "$dir/$file"
+        notify-send "📸 Screenshot selectie" "$dir/$file"
+        ;;
+esac
