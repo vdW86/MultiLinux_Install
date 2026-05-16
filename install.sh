@@ -20,6 +20,7 @@ mkdir -p ~/dotfiles
 cp -r shared/backgrounds ~/dotfiles/
 cp -r shared/bash ~/dotfiles/
 cp -r shared/scripts ~/dotfiles/
+cp -r shared/config ~/dotfiles/
 
 # Vraag om systeemkeuze
 PS3="Voor welk systeem wil je installeren? "
