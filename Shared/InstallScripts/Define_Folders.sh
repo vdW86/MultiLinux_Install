@@ -1,0 +1,30 @@
+# Hier maak ik de mappen aan die ik gebruik, en voeg ik mijn specifieke configs toe
+# De configs symlink ik.
+
+# Definieer mappen en hun bestanden in één associatieve array
+declare -A configs=(
+    [alacritty]="alacritty.toml keybinds.toml nordic.toml"
+    [dunst]="dunstrc"
+    [fuzzel]="fuzzel.ini"
+    [hypr]="hyprland.conf"
+    [kitty]="kitty.conf"
+    [swaylock]="config backgrounds"
+    [waybar]="config.jsonc style.css"
+)
+
+# Loop door alle entries: verwijder, maak aan, en symlink in één stap
+for map in "${!configs[@]}"; do
+    target_dir="$HOME/.config/$map"
+    source_dir="$HOME/dotfiles/config/$map"
+
+    # Verwijder de map als deze bestaat
+    [ -d "$target_dir" ] && rm -rf "$target_dir"
+
+    # Maak de map aan
+    mkdir -p "$target_dir"
+
+    # Symlink alle bestanden (als ze gedefinieerd zijn)
+    for file in ${configs[$map]}; do
+        [ -n "$file" ] && ln -sf "$source_dir/$file" "$target_dir/$file"
+    done
+done
