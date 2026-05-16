@@ -2,7 +2,6 @@ alacritty
 foot 
 cabextract 
 7zip 
-p7zip-plugins 
 dunst 
 wl-clipboard 
 qalculate 
@@ -30,5 +29,4 @@ xdg-user-dirs
 keepassxc 
 libreoffice-base 
 libreoffice-l10n-nl
-nmcli
 swayimg
