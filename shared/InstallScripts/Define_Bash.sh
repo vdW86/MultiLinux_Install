@@ -22,7 +22,11 @@ elif [ "$SYSTEM" = "opensuse" ]; then
 cat >> ~/.bashrc <<EOF
 
 # Zypper package shortcuts
-alias pac="sudo zypper install"
+alias pac="sudo zypper install" # Installeren van pakketten
+alias psync="sudo zypper refresh" # update bronnen
+alias pacu="sudo zypper dup"
+alias pacinstalled="zypper se --installed-only | awk '{print $3}' | sort" # Lijst van alle pakketten (gesorteerd op naam)
+alias pacinstalledsort="zypper se --installed-only | awk '{print $3, $5}' | sort -k2 -n | tail -n 20" # Top 20 grootste pakketten (op schijfruimte)
 EOF
 else
     echo "Geen systeem geselecteerd. Afsluiten."
