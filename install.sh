@@ -87,17 +87,19 @@ else
     echo "Geen pakketten gevonden in $SCRIPT_DIR/$SYSTEM/packs.sh"
 fi
 
+export SYSTEM # Zorg dat $SYSTEM beschikbaar is
+
 # Voer extra scripts uit (alleen als ze bestaan)
 if [ -f "$SCRIPT_DIR/shared/InstallScripts/Define_Folders.sh" ]; then
     echo "Voer Define_Folders.sh uit..."
-    "$SCRIPT_DIR/shared/InstallScripts/Define_Folders.sh"
+    source "$SCRIPT_DIR/shared/InstallScripts/Define_Folders.sh"
 else
     echo "Waarschuwing: $SCRIPT_DIR/shared/InstallScripts/Define_Folders.sh niet gevonden."
 fi
 
 if [ -f "$SCRIPT_DIR/shared/InstallScripts/Define_Bash.sh" ]; then
     echo "Voer Define_Bash.sh uit..."
-    "$SCRIPT_DIR/shared/InstallScripts/Define_Bash.sh"
+   source "$SCRIPT_DIR/shared/InstallScripts/Define_Bash.sh"
 else
     echo "Waarschuwing: $SCRIPT_DIR/shared/InstallScripts/Define_Bash.sh niet gevonden."
 fi
