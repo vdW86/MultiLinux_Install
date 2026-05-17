@@ -1,6 +1,9 @@
 # Hier maak ik de mappen aan die ik gebruik, en voeg ik mijn specifieke configs toe
 # De configs symlink ik.
 
+# Beginnen met basisfolders in home/user
+xdg-user-dirs-update
+
 # Definieer mappen en hun bestanden in één associatieve array
 declare -A configs=(
     [alacritty]="alacritty.toml keybinds.toml nordic.toml"
@@ -28,3 +31,8 @@ for map in "${!configs[@]}"; do
         [ -n "$file" ] && ln -sf "$source_dir/$file" "$target_dir/$file"
     done
 done
+
+# Kopieer gedeelde mappen naar ~/dotfiles/
+echo "Kopieer gedeelde mappen naar ~/dotfiles/..."
+mkdir -p ~/dotfiles
+cp -r "$SCRIPT_DIR/shared/"* ~/dotfiles/

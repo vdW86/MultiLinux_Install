@@ -9,6 +9,10 @@ LOG_FILE="$HOME/dotfiles_install_$(date +%Y-%m-%d_%H-%M-%S).log"
 exec > >(tee -a "$LOG_FILE") 2>&1
 echo "=== Start installatie $(date) ==="
 
+# Scripts executable maken
+chmod +x "$SCRIPT_DIR/shared/InstallScripts/*"
+chmod +x "$SCRIPT_DIR/shared/scripts/*"
+
 # Bevestigingsvraag
 read -p "Weet je zeker dat je de installatie wilt starten? (j/n): " -n 1 -r
 echo
@@ -17,12 +21,6 @@ if [[ ! $REPLY =~ ^[Jj]$ ]]; then
     exit 0
 fi
 
-# Kopieer gedeelde mappen naar ~/dotfiles/
-echo "Kopieer gedeelde mappen naar ~/dotfiles/..."
-mkdir -p ~/dotfiles
-cp -r "$SCRIPT_DIR/shared/"* ~/dotfiles/
-
-# Vraag om systeemkeuze
 PS3="Voor welk systeem wil je installeren? "
 options=("opensuse" "fedora" "Afsluiten")
 select opt in "${options[@]}"; do
@@ -50,6 +48,10 @@ if [ ! -f "$SCRIPT_DIR/$SYSTEM/packs.sh" ]; then
     echo "Fout: $SCRIPT_DIR/$SYSTEM/packs.sh niet gevonden."
     exit 1
 fi
+
+# Hier zorg ik ervoor dat ik alle variabelen meeneem naar subscripts
+export SYSTEM # Zorg dat $SYSTEM beschikbaar is
+export SCRIPT_DIR # Zorg dat $SCRIPT_DIR beschikbaar is
 
 echo "Gekozen systeem: $SYSTEM"
 echo "Pakketten installeren met: sudo $PKG_MANAGER"
@@ -87,12 +89,6 @@ else
     echo "Geen pakketten gevonden in $SCRIPT_DIR/$SYSTEM/packs.sh"
 fi
 
-# Juiste mappen aanmaken in de homefolder
-xdg-user-dirs-update
-
-
-
-export SYSTEM # Zorg dat $SYSTEM beschikbaar is
 
 # Voer extra scripts uit (alleen als ze bestaan)
 if [ -f "$SCRIPT_DIR/shared/InstallScripts/Define_Folders.sh" ]; then
