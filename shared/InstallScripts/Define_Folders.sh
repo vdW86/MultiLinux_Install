@@ -36,3 +36,6 @@ done
 echo "Kopieer gedeelde mappen naar ~/dotfiles/..."
 mkdir -p ~/dotfiles
 cp -r "$SCRIPT_DIR/shared/"* ~/dotfiles/
+
+# Kopieer Backgrounds naar Pictures
+cp -r "$SCRIPT_DIR/shared/backgrounds" ~/Pictures/

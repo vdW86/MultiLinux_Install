@@ -10,8 +10,8 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 echo "=== Start installatie $(date) ==="
 
 # Scripts executable maken
-find "$SCRIPT_DIR/shared/InstallScripts/" -type f -exec chmod +x {} 
-find "$SCRIPT_DIR/shared/scripts/" -type f -exec chmod +x {} 
+find "$SCRIPT_DIR/shared/InstallScripts/" -type f -exec chmod +x {} +
+find "$SCRIPT_DIR/shared/scripts/" -type f -exec chmod +x {} +
 
 # Bevestigingsvraag
 read -p "Weet je zeker dat je de installatie wilt starten? (j/n): " -n 1 -r
