@@ -55,15 +55,30 @@ echo "Gekozen systeem: $SYSTEM"
 echo "Pakketten installeren met: sudo $PKG_MANAGER"
 
 # Lees alle pakketten in een array (sla opmerkingen en lege regels over)
-mapfile -t packages < <(grep -v '^#' "$SCRIPT_DIR/$SYSTEM/packs.sh" | grep -v '^$' | tr -d '\r')
+packages=()
+while IFS= read -r line || [ -n "$line" ]; do
+    # Sla opmerkingen en lege regels over
+    if [[ "$line" =~ ^#.*$ ]] || [ -z "$line" ]; then
+        continue
+    fi
+    # Verwijder \r (CRLF) en spaties
+    line=$(echo "$line" | tr -d '\r' | xargs)
+    packages+=("$line")
+done < "$SCRIPT_DIR/$SYSTEM/packs.sh"
 
 # Installeer alle pakketten in één commando
 if [ ${#packages[@]} -gt 0 ]; then
     echo "Installeren van alle pakketten: ${packages[*]}"
     echo "Opdracht: sudo $PKG_MANAGER ${packages[*]}"
 
-    # Voer het commando uit met sudo en stuur de uitvoer naar terminal + logbestand
-    if ! sudo sh -c "$PKG_MANAGER \"${packages[@]}\"" 2>&1 | tee -a "$LOG_FILE"; then
+    # Bouw het commando op
+    cmd="sudo $PKG_MANAGER"
+    for pkg in "${packages[@]}"; do
+        cmd+=" \"$pkg\""
+    done
+
+    # Voer het commando uit en toon/log de uitvoer
+    if ! eval "$cmd" 2>&1 | tee -a "$LOG_FILE"; then
         echo "❌ Fout: Niet alle pakketten konden worden geïnstalleerd. Zie logbestand voor details."
     else
         echo "✅ Alle pakketten geïnstalleerd."
@@ -72,15 +87,17 @@ else
     echo "Geen pakketten gevonden in $SCRIPT_DIR/$SYSTEM/packs.sh"
 fi
 
-# Voer extra scripts uit
+# Voer extra scripts uit (alleen als ze bestaan)
 if [ -f "$SCRIPT_DIR/shared/InstallScripts/Define_Folders.sh" ]; then
-#    "$SCRIPT_DIR/shared/InstallScripts/Define_Folders.sh"
+    echo "Voer Define_Folders.sh uit..."
+    "$SCRIPT_DIR/shared/InstallScripts/Define_Folders.sh"
 else
     echo "Waarschuwing: $SCRIPT_DIR/shared/InstallScripts/Define_Folders.sh niet gevonden."
 fi
 
 if [ -f "$SCRIPT_DIR/shared/InstallScripts/Define_Bash.sh" ]; then
- #   "$SCRIPT_DIR/shared/InstallScripts/Define_Bash.sh"
+    echo "Voer Define_Bash.sh uit..."
+    "$SCRIPT_DIR/shared/InstallScripts/Define_Bash.sh"
 else
     echo "Waarschuwing: $SCRIPT_DIR/shared/InstallScripts/Define_Bash.sh niet gevonden."
 fi
