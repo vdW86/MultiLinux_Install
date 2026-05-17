@@ -87,6 +87,11 @@ else
     echo "Geen pakketten gevonden in $SCRIPT_DIR/$SYSTEM/packs.sh"
 fi
 
+# Juiste mappen aanmaken in de homefolder
+xdg-user-dirs-update
+
+
+
 export SYSTEM # Zorg dat $SYSTEM beschikbaar is
 
 # Voer extra scripts uit (alleen als ze bestaan)

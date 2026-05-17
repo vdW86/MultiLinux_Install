@@ -25,12 +25,12 @@ if [ -n "$ZSH_VERSION" ]; then
   PROFILE="$HOME/.zprofile"
 fi
 
-if ! grep -q "exec Hyprland" "$PROFILE" 2>/dev/null; then
+if ! grep -q "start-hyprland" "$PROFILE" 2>/dev/null; then
   cat >> "$PROFILE" <<'EOL'
 
 # Start Hyprland automatisch op tty1
 if [[ -z $DISPLAY ]] && [[ $(tty) == /dev/tty1 ]]; then
-    exec Hyprland
+    exec start-hyprland
 fi
 EOL
   echo "✅ Hyprland autostart toegevoegd aan $PROFILE"
