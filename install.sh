@@ -109,5 +109,12 @@ else
     echo "Waarschuwing: $SCRIPT_DIR/shared/InstallScripts/Define_Bash.sh niet gevonden."
 fi
 
+if [ -f "$SCRIPT_DIR/shared/InstallScripts/setup-autologin.sh" ]; then
+    echo "setup-autologin.sh uit..."
+   source "$SCRIPT_DIR/shared/InstallScripts/setup-autologin.sh"
+else
+    echo "Waarschuwing: $SCRIPT_DIR/shared/InstallScripts/setup-autologin.sh niet gevonden."
+fi
+
 echo "=== Installatie voor $SYSTEM voltooid ==="
 echo "Je kunt $SCRIPT_DIR nu verwijderen."
