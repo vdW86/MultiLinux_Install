@@ -9,8 +9,5 @@ if [[ -z "$DISPLAY" ]] && [[ $(tty) == "/dev/tty1" ]]; then
 #    bash "$HOME/dotfiles/scripts/auto_lock.sh" &
 
     # Start Hyprland
-    exec /usr/bin/Hyprland
+    exec /usr/bin/start-hyprland
 fi
-
-# Alias om GNOME op TTY3 te starten
-alias start-gdm='~/dotfiles/scripts/GNOME/start-gnome.sh'
