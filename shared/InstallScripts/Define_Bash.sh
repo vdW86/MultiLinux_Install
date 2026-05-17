@@ -6,7 +6,7 @@ source ~/dotfiles/bash/bash_aliases.sh
 source ~/dotfiles/bash/bash_extra.sh
 EOF
 
-if [$SYSTEM = "fedora"]; then
+if [ "$SYSTEM" = "fedora" ]; then
 cat >> ~/.bashrc <<EOF
 
 # DNF package shortcuts
@@ -18,7 +18,7 @@ alias pacr="sudo dnf remove"
 alias listpacu="dnf list --installed"
 alias pacsco="dnf list --installed | grep"
 EOF
-elif [$SYSTEM = "opensuse"]; then
+elif [ "$SYSTEM" = "opensuse" ]; then
 cat >> ~/.bashrc <<EOF
 
 # Zypper package shortcuts
