@@ -7,6 +7,7 @@ xdg-user-dirs-update
 # Definieer mappen en hun bestanden in één associatieve array
 declare -A configs=(
     [alacritty]="alacritty.toml keybinds.toml nordic.toml"
+    [fastfetch]="config.jsonc logo.txt"
     [dunst]="dunstrc"
     [fuzzel]="fuzzel.ini"
     [hypr]="hyprland.conf"
