@@ -6,6 +6,9 @@ case "$TERM" in
     *alacritty*)
         PS1="worp> "
         ;;
+    *foot*)
+        PS1="\[\e[41m\]   \[\e[48;5;15m\]   \[\e[44m\]   \[\e[m\] > "
+         ;; 
     *kitty*)
         PS1="\[\e[41m\]   \[\e[48;5;15m\]   \[\e[44m\]   \[\e[m\] > "
         ;;
@@ -16,6 +19,11 @@ esac
 
 # Voeg dotfiles scripts toe aan PATH
 export PATH="$HOME/dotfiles/scripts:$PATH"
+
+# Enable fastfetch when installed
+if [ -f /usr/bin/fastfetch ]; then
+	fastfetch
+fi
 
 # Enable autocd
 shopt -s autocd
