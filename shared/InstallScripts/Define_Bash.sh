@@ -23,8 +23,14 @@ cat >> ~/.bashrc <<EOF
 
 # Zypper package shortcuts
 alias pac="sudo zypper install" # Installeren van pakketten
-alias psync="sudo zypper refresh" # update bronnen
 alias pacu="sudo zypper dup"
+alias psync="sudo zypper refresh" # update bronnen
+alias plist="sudo zypper list-updates"
+alias paci="zypper info"
+alias pacs="sudo zypper search"
+alias paco="sudo zypper packages --orphaned"	# Identifying orphaned packages
+alias pacr="sudo zypper rm --clean-deps"
+#alias pacc="sudo zypper"
 alias pacinstalled="zypper se --installed-only | awk '{print $3}' | sort" # Lijst van alle pakketten (gesorteerd op naam)
 alias pacinstalledsort="zypper se --installed-only | awk '{print $3, $5}' | sort -k2 -n | tail -n 20" # Top 20 grootste pakketten (op schijfruimte)
 EOF
