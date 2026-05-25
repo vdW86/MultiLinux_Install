@@ -1,8 +1,7 @@
 ####################
 ### Browsers
 ####################
-chromium
-qutebrowser
+falkon          # QtWebEngine (lichter dan Chromium)
 ####################
 ### Connections
 ####################
@@ -18,7 +17,8 @@ papirus-folders
 ####################
 ### Media
 ####################
-vlc
+mpv             # Vervangt VLC (Wayland-native)
+celluloid       # GTK-frontend voor mpv (optioneel)
 gimp
 swayimg
 cheese
@@ -28,29 +28,28 @@ cheese
 libreoffice-base
 libreoffice-l10n-nl
 qalculate
-zathura
-featherpad
-geany
+zathura         # PDF-viewer (licht)
+featherpad      # Teksteditor (Qt)
+geany           # Teksteditor (GTK)
 keepassxc
 calibre
 ####################
 ### utils
 ####################
-alacritty
-foot
+foot            # Terminal (Wayland-native)
+fastfetch       # Systeeminformatie
+speedtest-cli   # Snelheidstest
+xdg-user-dirs   # XDG-mappen
+wl-clipboard    # Clipboard voor Wayland
 7zip
-fastfetch
-speedtest-cli
-xdg-user-dirs
-cabextract
-wl-clipboard
 thunar-archive-plugin
 thunar-media-tags-plugin
+lxpolkit
 ####################
 ### Windowmanager + Utils
 ####################
-dunst
-swaylock
-swayidle
-swaybg
-fuzzel
+dunst           # Notificaties
+swaylock        # Schermvergrendeling
+swayidle        # Idle-management
+swaybg          # Achtergrondbeheer
+fuzzel          # Applicatielancer (Wayland)
