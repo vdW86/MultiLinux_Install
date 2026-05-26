@@ -8,6 +8,7 @@ xdg-user-dirs-update
 declare -A configs=(
     [alacritty]="alacritty.toml keybinds.toml nordic.toml"
     [fastfetch]="config.jsonc logo.txt"
+    [foot]="foot.ini"
     [dunst]="dunstrc"
     [fuzzel]="fuzzel.ini"
     [hypr]="hyprland.conf"
