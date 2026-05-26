@@ -12,6 +12,7 @@ alias info="fastfetch"					#Info with Fastfetch
 alias icpu="lscpu"					#CPU information  
 alias ipci="lspci"					#PCI information
 alias ibios="sudo dmidecode -t bios"			#BIOS info
+alias weer="curl wttr.in/Almelo"
 
 # Config editors
 alias hypr="vi ~/dotfiles/config/hypr/hyprland.conf"
