@@ -12,7 +12,6 @@ libreoffice
 libreoffice-l10n-nl
 qalculate
 zathura
-featherpad
 geany
 keepassxc
 calibre
