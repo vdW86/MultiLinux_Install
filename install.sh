@@ -1,28 +1,31 @@
-#!/bin/bash
-set -e  # Stop bij fouten
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Bepaal de scriptmap
+# === SCRIPT DIRECTORY ===
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Logbestand: sla alles op in ~/dotfiles_install_<datum-tijd>.log
-LOG_FILE="$HOME/dotfiles_install_$(date +%Y-%m-%d_%H-%M-%S).log"
+# === LOGGING ===
+LOG_DIR="$HOME/install_logs"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/install_$(date +%Y-%m-%d_%H-%M-%S).log"
+
 exec > >(tee -a "$LOG_FILE") 2>&1
+
 echo "=== Start installatie $(date) ==="
 
-# Scripts executable maken
-find "$SCRIPT_DIR/shared/InstallScripts/" -type f -exec chmod +x {} +
-find "$SCRIPT_DIR/shared/scripts/" -type f -exec chmod +x {} +
-
-# Bevestigingsvraag
-read -p "Weet je zeker dat je de installatie wilt starten? (j/n): " -n 1 -r
+# === CONFIRM ===
+read -rp "Weet je zeker dat je de installatie wilt starten? (j/n): " -n 1
 echo
+
 if [[ ! $REPLY =~ ^[Jj]$ ]]; then
     echo "Installatie afgebroken."
     exit 0
 fi
 
+# === DISTRO SELECTIE ===
 PS3="Voor welk systeem wil je installeren? "
 options=("opensuse" "fedora" "Afsluiten")
+
 select opt in "${options[@]}"; do
     case $opt in
         "opensuse")
@@ -39,78 +42,64 @@ select opt in "${options[@]}"; do
             echo "Installatie afgebroken."
             exit 0
             ;;
-        *) echo "Ongeldige keuze. Probeer opnieuw." ;;
+        *)
+            echo "Ongeldige keuze."
+            ;;
     esac
 done
 
-# Controleer of $SYSTEM en packs.sh bestaan
-if [ ! -f "$SCRIPT_DIR/$SYSTEM/packs.sh" ]; then
-    echo "Fout: $SCRIPT_DIR/$SYSTEM/packs.sh niet gevonden."
+export SYSTEM
+export SCRIPT_DIR
+
+echo "Gekozen systeem: $SYSTEM"
+
+# === PACKAGE FILE CHECK ===
+PACKAGE_DIR="$SCRIPT_DIR/$SYSTEM/packages"
+
+if [[ ! -f "$PACK_FILE" ]]; then
+    echo "Fout: $PACK_FILE niet gevonden."
     exit 1
 fi
 
-# Hier zorg ik ervoor dat ik alle variabelen meeneem naar subscripts
-export SYSTEM # Zorg dat $SYSTEM beschikbaar is
-export SCRIPT_DIR # Zorg dat $SCRIPT_DIR beschikbaar is
-
-echo "Gekozen systeem: $SYSTEM"
-echo "Pakketten installeren met: sudo $PKG_MANAGER"
-
-# Lees alle pakketten in een array (sla opmerkingen en lege regels over)
+# === PACKAGES INLEZEN ===
 packages=()
-while IFS= read -r line || [ -n "$line" ]; do
-    # Sla opmerkingen en lege regels over
-    if [[ "$line" =~ ^#.*$ ]] || [ -z "$line" ]; then
-        continue
-    fi
-    # Verwijder \r (CRLF) en spaties
-    line=$(echo "$line" | tr -d '\r' | xargs)
-    packages+=("$line")
-done < "$SCRIPT_DIR/$SYSTEM/packs.sh"
 
-# Installeer alle pakketten in één commando
-if [ ${#packages[@]} -gt 0 ]; then
-    echo "Installeren van alle pakketten: ${packages[*]}"
-    echo "Opdracht: sudo $PKG_MANAGER ${packages[*]}"
+for file in "$PACKAGE_DIR"/*.sh; do
+    echo "Inlezen: $(basename "$file")"
 
-    # Bouw het commando op
-    cmd="sudo $PKG_MANAGER"
-    for pkg in "${packages[@]}"; do
-        cmd+=" \"$pkg\""
-    done
+    while IFS= read -r line || [[ -n "$line" ]]; do
+        if [[ "$line" =~ ^# ]] || [[ -z "$line" ]]; then
+            continue
+        fi
 
-    # Voer het commando uit en toon/log de uitvoer
-    if ! eval "$cmd" 2>&1 | tee -a "$LOG_FILE"; then
-        echo "❌ Fout: Niet alle pakketten konden worden geïnstalleerd. Zie logbestand voor details."
+        line=$(echo "$line" | tr -d '\r' | xargs)
+        packages+=("$line")
+
+    done < "$file"
+
+done
+# === INSTALLEREN ===
+if [[ ${#packages[@]} -gt 0 ]]; then
+    echo "Installeren van pakketten..."
+    sudo $PKG_MANAGER "${packages[@]}"
+else
+    echo "Geen pakketten gevonden."
+fi
+
+# === SHARED SCRIPTS ===
+run_script () {
+    local script="$1"
+
+    if [[ -f "$script" ]]; then
+        echo "Voer $(basename "$script") uit..."
+        source "$script"
     else
-        echo "✅ Alle pakketten geïnstalleerd."
+        echo "Waarschuwing: $script niet gevonden."
     fi
-else
-    echo "Geen pakketten gevonden in $SCRIPT_DIR/$SYSTEM/packs.sh"
-fi
+}
 
+run_script "$SCRIPT_DIR/shared/InstallScripts/Define_Folders.sh"
+run_script "$SCRIPT_DIR/shared/InstallScripts/Define_Bash.sh"
+run_script "$SCRIPT_DIR/shared/InstallScripts/setup-autologin.sh"
 
-# Voer extra scripts uit (alleen als ze bestaan)
-if [ -f "$SCRIPT_DIR/shared/InstallScripts/Define_Folders.sh" ]; then
-    echo "Voer Define_Folders.sh uit..."
-    source "$SCRIPT_DIR/shared/InstallScripts/Define_Folders.sh"
-else
-    echo "Waarschuwing: $SCRIPT_DIR/shared/InstallScripts/Define_Folders.sh niet gevonden."
-fi
-
-if [ -f "$SCRIPT_DIR/shared/InstallScripts/Define_Bash.sh" ]; then
-    echo "Voer Define_Bash.sh uit..."
-   source "$SCRIPT_DIR/shared/InstallScripts/Define_Bash.sh"
-else
-    echo "Waarschuwing: $SCRIPT_DIR/shared/InstallScripts/Define_Bash.sh niet gevonden."
-fi
-
-if [ -f "$SCRIPT_DIR/shared/InstallScripts/setup-autologin.sh" ]; then
-    echo "setup-autologin.sh uit..."
-   source "$SCRIPT_DIR/shared/InstallScripts/setup-autologin.sh"
-else
-    echo "Waarschuwing: $SCRIPT_DIR/shared/InstallScripts/setup-autologin.sh niet gevonden."
-fi
-
-echo "=== Installatie voor $SYSTEM voltooid ==="
-echo "Je kunt $SCRIPT_DIR nu verwijderen."
+echo "=== Installatie voltooid ==="
