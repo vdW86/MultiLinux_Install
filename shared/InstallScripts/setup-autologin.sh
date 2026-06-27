@@ -1,5 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Setup autologin voor getty@tty1 en start Hyprland automatisch
+
+set -e
 
 USER_NAME=$(whoami)
 OVERRIDE_DIR="/etc/systemd/system/getty@tty1.service.d"
