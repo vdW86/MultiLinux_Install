@@ -1,8 +1,14 @@
 [main]
-#font=FiraCode Nerd Font:size=12
 term=foot
+font=Fira Code:size=12
+
 [colors]
-background=1e1e2e
-foreground=cdd6f4
-selection-foreground=1e1e2e
-selection-background=89b4fa
+foreground=dcd7ba
+background=1f1f28
+
+[scrollback]
+lines=1000
+
+[cursor]
+style=underline
+blink=yes
