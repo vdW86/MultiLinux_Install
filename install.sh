@@ -30,12 +30,12 @@ select opt in "${options[@]}"; do
     case $opt in
         "opensuse")
             SYSTEM="opensuse"
-            PKG_MANAGER="zypper install -y"
+            PKG_MANAGER="zypper install -y --no-recommends"
             break
             ;;
         "fedora")
             SYSTEM="fedora"
-            PKG_MANAGER="dnf install -y"
+            PKG_MANAGER="dnf install -y --no-recommends"
             break
             ;;
         "Afsluiten")
