@@ -21,7 +21,7 @@ echo "✅ Autologin ingesteld in $OVERRIDE_FILE"
 # Stap 2: automatisch Hyprland starten bij login
 PROFILE="$HOME/.bash_profile"
 
-if [ -n "$ZSH_VERSION" ]; then
+if [[ -n "${ZSH_VERSION:-}" ]]; then
   PROFILE="$HOME/.zprofile"
 fi
 
