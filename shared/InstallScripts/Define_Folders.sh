@@ -1,43 +1,69 @@
-# Hier maak ik de mappen aan die ik gebruik, en voeg ik mijn specifieke configs toe
-# De configs symlink ik.
+#!/usr/bin/env bash
 
-# Beginnen met basisfolders in home/user
+echo "=== Configureer mappen en symlinks ==="
+
+# Zorg dat standaard XDG mappen bestaan
 xdg-user-dirs-update
 
-# Definieer mappen en hun bestanden in één associatieve array
+# Basis paden
+DOTFILES_DIR="$HOME/dotfiles"
+CONFIG_SOURCE="$DOTFILES_DIR/config"
+
+# --- DOTFILES SYNC ---
+echo "Synchroniseer dotfiles..."
+mkdir -p "$DOTFILES_DIR"
+rsync -av --delete "$SCRIPT_DIR/shared/" "$DOTFILES_DIR/"
+
+# --- SCRIPTS EXECUTABLE MAKEN ---
+if [[ -d "$DOTFILES_DIR/scripts" ]]; then
+    echo "Maak scripts uitvoerbaar..."
+    find "$DOTFILES_DIR/scripts/" -type f -name "*.sh" -exec chmod +x {} \;
+fi
+
+# --- CONFIG MAPPING ---
 declare -A configs=(
-    [alacritty]="alacritty.toml keybinds.toml nordic.toml"
-    [fastfetch]="config.jsonc logo.txt"
-    [foot]="foot.ini"
-    [dunst]="dunstrc"
-    [fuzzel]="fuzzel.ini"
-    [hypr]="hyprland.conf"
-    [kitty]="kitty.conf"
-    [swaylock]="config backgrounds"
-    [waybar]="config.jsonc style.css"
+  [alacritty]="alacritty.toml keybinds.toml nordic.toml"
+  [fastfetch]="config.jsonc logo.txt"
+  [foot]="foot.ini"
+  [dunst]="dunstrc"
+  [fuzzel]="fuzzel.ini"
+  [hypr]="hyprland.conf"
+  [kitty]="kitty.conf"
+  [swaylock]="config backgrounds"
+  [waybar]="config.jsonc style.css"
 )
 
-# Loop door alle entries: verwijder, maak aan, en symlink in één stap
-for map in "${!configs[@]}"; do
-    target_dir="$HOME/.config/$map"
-    source_dir="$HOME/dotfiles/config/$map"
+echo "Maak symlinks in ~/.config..."
 
-    # Verwijder de map als deze bestaat
-    [ -d "$target_dir" ] && rm -rf "$target_dir"
+for app in "${!configs[@]}"; do
+    TARGET_DIR="$HOME/.config/$app"
+    SOURCE_DIR="$CONFIG_SOURCE/$app"
 
-    # Maak de map aan
-    mkdir -p "$target_dir"
+    echo "→ $app"
 
-    # Symlink alle bestanden (als ze gedefinieerd zijn)
-    for file in ${configs[$map]}; do
-        [ -n "$file" ] && ln -sf "$source_dir/$file" "$target_dir/$file"
+    mkdir -p "$TARGET_DIR"
+
+    for file in ${configs[$app]}; do
+        SOURCE_FILE="$SOURCE_DIR/$file"
+        TARGET_FILE="$TARGET_DIR/$file"
+
+        if [[ -e "$SOURCE_FILE" ]]; then
+            ln -sf "$SOURCE_FILE" "$TARGET_FILE"
+        else
+            echo "⚠️  Bestand ontbreekt: $SOURCE_FILE"
+        fi
     done
 done
 
-# Kopieer gedeelde mappen naar ~/dotfiles/
-echo "Kopieer gedeelde mappen naar ~/dotfiles/..."
-mkdir -p ~/dotfiles
-cp -r "$SCRIPT_DIR/shared/"* ~/dotfiles/
+# --- BACKGROUNDS ---
+echo "Kopieer backgrounds..."
+mkdir -p "$HOME/Pictures/backgrounds"
 
-# Kopieer Backgrounds naar Pictures
-cp -r "$SCRIPT_DIR/shared/backgrounds" ~/Pictures/
+if [[ -d "$DOTFILES_DIR/backgrounds" ]]; then
+    rsync -av --delete "$DOTFILES_DIR/backgrounds/" "$HOME/Pictures/backgrounds/"
+else
+    echo "⚠️  Geen backgrounds map gevonden in dotfiles"
+fi
+
+echo "✅ Configuratie voltooid"
+
