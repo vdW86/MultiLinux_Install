@@ -14,4 +14,5 @@ wl-clipboard
 fastfetch
 speedtest-cli
 
-lxpolkit
+polkit-gnome
+
