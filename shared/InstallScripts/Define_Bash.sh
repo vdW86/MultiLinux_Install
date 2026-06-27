@@ -31,8 +31,8 @@ alias pacs="sudo zypper search"
 alias paco="sudo zypper packages --orphaned"	# Identifying orphaned packages
 alias pacr="sudo zypper rm --clean-deps"
 #alias pacc="sudo zypper"
-alias pacinstalled="zypper se --installed-only | awk '{print $3}' | sort" # Lijst van alle pakketten (gesorteerd op naam)
-alias pacinstalledsort="zypper se --installed-only | awk '{print $3, $5}' | sort -k2 -n | tail -n 20" # Top 20 grootste pakketten (op schijfruimte)
+alias pacinstalled="zypper se --installed-only | awk '{print \$3}' | sort" # Lijst van alle pakketten (gesorteerd op naam)
+alias pacinstalledsort="zypper se --installed-only | awk '{print \$3, \$5}' | sort -k2 -n | tail -n 20" # Top 20 grootste pakketten (op schijfruimte)
 EOF
 else
     echo "Geen systeem geselecteerd. Afsluiten."
