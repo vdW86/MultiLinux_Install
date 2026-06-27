@@ -56,8 +56,8 @@ echo "Gekozen systeem: $SYSTEM"
 # === PACKAGE FILE CHECK ===
 PACKAGE_DIR="$SCRIPT_DIR/$SYSTEM/packages"
 
-if [[ ! -f "$PACK_FILE" ]]; then
-    echo "Fout: $PACK_FILE niet gevonden."
+if [[ ! -d "$PACKAGE_DIR" ]]; then
+    echo "Fout: $PACKAGE_DIR niet gevonden."
     exit 1
 fi
 
