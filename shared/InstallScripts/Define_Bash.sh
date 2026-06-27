@@ -29,8 +29,8 @@ alias paci="zypper info"
 alias pacs="sudo zypper search"
 alias paco="sudo zypper packages --orphaned"
 alias pacr="sudo zypper rm --clean-deps"
-alias pacinstalled="zypper se --installed-only | awk '{print \\$3}' | sort"
-alias pacinstalledsort="zypper se --installed-only | awk '{print \\$3, \\$5}' | sort -k2 -n | tail -n 20"
+alias pacinstalled="zypper se --installed-only | awk '{print \$3}' | sort"
+alias pacinstalledsort="zypper se --installed-only | awk '{print \$3, \$5}' | sort -k2 -n | tail -n 20"
 EOF
     fi
 fi
