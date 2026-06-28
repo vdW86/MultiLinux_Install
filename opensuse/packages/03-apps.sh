@@ -4,12 +4,12 @@ falkon
 
 mpv
 celluloid
-gimp
+pinta
 swayimg
 cheese
 
-libreoffice
-libreoffice-l10n-nl
+abiword
+gnumeric
 qalculate
 zathura
 geany
