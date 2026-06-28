@@ -16,3 +16,4 @@ speedtest-cli
 
 polkit-gnome
 nmcli-dmenu
+NetworkManager-connection-editor
