@@ -44,4 +44,13 @@ if ! grep -q "bash_profile.sh" "$BASHPROFILE" 2>/dev/null; then
 EOF
 fi
 
+if ! grep -q "MOZ_ENABLE_WAYLAND" "$BASHPROFILE" 2>/dev/null; then
+    cat >> "$BASHPROFILE" <<EOF
+
+# Firefox Wayland
+export MOZ_ENABLE_WAYLAND=1
+EOF
+fi
+
+
 echo "✅ Bash configuratie voltooid"

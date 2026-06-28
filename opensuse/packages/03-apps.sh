@@ -1,6 +1,6 @@
 # === APPLICATIONS ===
 
-falkon
+firefox
 
 mpv
 celluloid
