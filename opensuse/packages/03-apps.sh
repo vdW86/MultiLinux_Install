@@ -1,6 +1,6 @@
 # === APPLICATIONS ===
 
-firefox
+MozillaFirefox
 
 mpv
 celluloid
