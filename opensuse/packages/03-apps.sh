@@ -7,6 +7,8 @@ celluloid
 pinta
 swayimg
 cheese
+grim
+slurp
 
 abiword
 gnumeric

@@ -11,3 +11,4 @@ dunst
 swaybg
 swaylock
 swayidle
+waybar
