@@ -7,6 +7,8 @@ xwayland
 foot
 fuzzel
 dunst
+ImageMagick
+libnotify-tools
 
 swaybg
 swaylock
